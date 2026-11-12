@@ -1,0 +1,9 @@
+# personal research data, never publish
+PG/
+reference/
+db/seed.sql
+*.log
+.env*
+node_modules/
+.next/
+.vercel/
