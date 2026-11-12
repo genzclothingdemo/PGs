@@ -133,3 +133,11 @@ NOT built yet (next steps, in order): 1) auth (phone OTP) + roles + phone reveal
 - NOT tested end-to-end: sign-in email flow, owner submit -> admin approve, photo upload, admin role actions (need a real signed-in user).
 - To do by owner of the accounts: (1) GitHub push permission, (2) Supabase Auth URL config + email template + SMTP, (3) create first super admin, (4) rotate DB password (it was shared in chat).
 - Later: Ahmedabad data, Gujarati/Hindi, commute calculator, phone OTP (needs SMS provider), custom domain.
+
+## 19. Data enrichment (12 Nov 2026)
+`scripts/enrich_plan.py` (reads every CSV/JSON in PG/ + a DB dump) -> plan.json -> `scripts/apply_plan.mjs` (one transaction, dry-run flag). Applied:
+- +28 PGs missing from the first import (Sector 3-13 scrape, Maps raw), filtered out govt/samaj/university hostels and brokers; area labels from sector centroids.
+- Real rents for 16 PGs: 13 from our own calls/WhatsApp (Notion), 3 from HexaHome listings. 147 old "prices" were our ESTIMATES and were NOT published.
+- food option / gate timing for 16 PGs; homes: furnishing, tenant preference, owner/broker; owner names stripped from home descriptions; +13 homes.
+- Skipped on purpose: Vrundavan rent (two listings share the name), Nisarg rent (ambiguous reply), private visit notes.
+- The PDFs in PG/ are generated from these CSVs, so they add no new facts. Tiffin services (88) are not in the DB yet (no table).
