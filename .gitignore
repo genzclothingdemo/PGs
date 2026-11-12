@@ -7,3 +7,4 @@ db/seed.sql
 node_modules/
 .next/
 .vercel/
+.vercel-old-pghub/

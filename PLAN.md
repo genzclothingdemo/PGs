@@ -141,3 +141,12 @@ NOT built yet (next steps, in order): 1) auth (phone OTP) + roles + phone reveal
 - food option / gate timing for 16 PGs; homes: furnishing, tenant preference, owner/broker; owner names stripped from home descriptions; +13 homes.
 - Skipped on purpose: Vrundavan rent (two listings share the name), Nisarg rent (ambiguous reply), private visit notes.
 - The PDFs in PG/ are generated from these CSVs, so they add no new facts. Tiffin services (88) are not in the DB yet (no table).
+
+## 20. Restructure v2 (12 Nov 2026)
+- Hosting: Vercel project `web` under genzclothingdemo (root dir `web`, auto-deploy from GitHub main) -> https://gandhinagarpgs.vercel.app. Old project pghub-one (ashishvarmora) is retired.
+- Visitors: no login. Home, Explore (type, girls/boys, with/without food, budget, sort), listing page (show number logs a lead, call-back form, report), Saved (on the phone). Mobile tab bar + PWA manifest.
+- Owners: email + password sign-up, email code (or link) confirmation, forgot/reset password, add property (details, rooms and rent, photos), submit for review, claim an imported listing.
+- Admin: /admin with ADMIN_EMAIL / ADMIN_PASSWORD from env (signed cookie, 12 h). Overview, Listings (filter, bulk publish/pause/archive, add, edit, rooms, photos, decision with note), Leads CRM (stages, notes, follow-up date, manual lead), Owners (allow/remove), Moderation (photos, claims, reports).
+- Server talks to Postgres through the Supabase pooler (DATABASE_URL); Supabase Auth only for owners.
+- UI: Hallmark theme Dose (warm paper, one green), sloplint 0 FAIL.
+- Pending on accounts: Supabase Auth URL config + email template with {{ .Token }}; Resend needs a verified domain before it can email owners.
