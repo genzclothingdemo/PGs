@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import { headers } from 'next/headers';
 import { supabase } from '@/lib/supabase/server';
 
 async function send(fd: FormData) {
@@ -6,7 +7,9 @@ async function send(fd: FormData) {
   const email = String(fd.get('email') || '').trim().toLowerCase();
   const next = String(fd.get('next') || '/dashboard');
   const sb = await supabase();
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3100';
+  const h = await headers();
+  const host = h.get('x-forwarded-host') || h.get('host') || 'localhost:3100';
+  const origin = `${h.get('x-forwarded-proto') || (host.startsWith('localhost') ? 'http' : 'https')}://${host}`;
   const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(next)}` } });
   redirect(error ? `/login?error=${encodeURIComponent(error.message)}` : `/login?sent=${encodeURIComponent(email)}&next=${encodeURIComponent(next)}`);
 }

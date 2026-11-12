@@ -126,3 +126,10 @@ Running locally: `cd web && node scripts_devdb.mjs` (embedded Postgres on :54329
 Built: Next.js 16 app in `web/` (cacheComponents turned OFF in next.config.ts), design tokens (forest green / warm paper / Fraunces + Inter), Home, Search (filters: city, type, gender, text, min/max rent, sort, pagination), Property detail (rooms table, details, OSM map embed, nearby), List-property placeholder. Ranking = Bayesian-adjusted Google rating for now.
 Schema changed to plain lat/lng (PostGIS removed) so it also runs on the local Postgres; add PostGIS on Supabase later if radius queries are needed.
 NOT built yet (next steps, in order): 1) auth (phone OTP) + roles + phone reveal RPC, 2) owner wizard + photos, 3) admin approval queue, 4) reviews/shortlist/compare/commute, 5) Ahmedabad import, 6) Supabase deploy.
+
+## 18. LIVE (12 Nov 2026)
+- Site: https://pghub-one.vercel.app (Vercel, account ashishvarmora). Database: Supabase project gklhyavhealbwqmcrnol (migrations 001-003 applied, 511 PGs + 279 homes seeded, areas labelled from sector centroids).
+- Built: email sign-in (link + code), roles (seeker/owner/moderator/admin/super_admin), phone reveal RPC, shortlist, reviews (moderated), reports, ownership claims, owner dashboard (add property, rooms/prices, photo upload, submit), admin (approval queue, photo/claim/report/review moderation, users & roles, recompute ranking, audit log).
+- NOT tested end-to-end: sign-in email flow, owner submit -> admin approve, photo upload, admin role actions (need a real signed-in user).
+- To do by owner of the accounts: (1) GitHub push permission, (2) Supabase Auth URL config + email template + SMTP, (3) create first super admin, (4) rotate DB password (it was shared in chat).
+- Later: Ahmedabad data, Gujarati/Hindi, commute calculator, phone OTP (needs SMS provider), custom domain.
