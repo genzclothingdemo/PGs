@@ -11,6 +11,7 @@ async function origin() {
 }
 const s = (fd: FormData, k: string) => String(fd.get(k) ?? '').trim();
 const enc = encodeURIComponent;
+const friendly = (m: string) => (/rate limit|too many/i.test(m) ? 'Too many emails were sent in the last hour. Please try again in an hour.' : /already registered|already exists/i.test(m) ? 'This email already has an account. Log in or reset the password.' : m);
 const safeNext = (n: string) => (n.startsWith('/owner') ? n : '/owner');
 
 export async function signUp(fd: FormData) {
@@ -19,7 +20,7 @@ export async function signUp(fd: FormData) {
   if (phone.length !== 10) redirect(`/owner/signup?error=${enc('Enter a 10-digit mobile number.')}`);
   const sb = await supabase();
   const { data, error } = await sb.auth.signUp({ email, password, options: { data: { full_name: name, phone }, emailRedirectTo: `${await origin()}/auth/callback?next=/owner` } });
-  if (error) redirect(`/owner/signup?error=${enc(error.message)}`);
+  if (error) redirect(`/owner/signup?error=${enc(friendly(error.message))}`);
   if (data.user) await q(`update profiles set full_name = $2, phone = $3 where id = $1`, [data.user.id, name, phone]);
   redirect(`/owner/verify?email=${enc(email)}`);
 }
@@ -40,7 +41,7 @@ export async function resendCode(fd: FormData) {
   const email = s(fd, 'email').toLowerCase();
   const sb = await supabase();
   const { error } = await sb.auth.resend({ type: 'signup', email, options: { emailRedirectTo: `${await origin()}/auth/callback?next=/owner` } });
-  redirect(`/owner/verify?email=${enc(email)}&${error ? `error=${enc(error.message)}` : 'resent=1'}`);
+  redirect(`/owner/verify?email=${enc(email)}&${error ? `error=${enc(friendly(error.message))}` : 'resent=1'}`);
 }
 
 export async function logIn(fd: FormData) {

@@ -150,3 +150,4 @@ NOT built yet (next steps, in order): 1) auth (phone OTP) + roles + phone reveal
 - Server talks to Postgres through the Supabase pooler (DATABASE_URL); Supabase Auth only for owners.
 - UI: Hallmark theme Dose (warm paper, one green), sloplint 0 FAIL.
 - Pending on accounts: Supabase Auth URL config + email template with {{ .Token }}; Resend needs a verified domain before it can email owners.
+- 12 Nov: no email domain yet, so Supabase's built-in email is used (link only, about 2 emails an hour, templates locked). Verify and reset pages are link-first; the code box sits behind "The email has a code instead" for when Resend SMTP + templates are added.
